@@ -1,0 +1,24 @@
+Amy Dixon
+PAI Internship Assessment: LinkedList vs. ArrayList
+3 April 2019
+
+Hypothesis: While both ArrayLists (AL) and LinkedLists (LL) afford rapid runtimes as list interface structures, ArrayLists perform better for quick element insertion and deletion. However, for more complex operations, including inserting in the middle of a list, LinkedLists are faster. 
+
+LLs and ALs are collection-types in Java that store elements by insertion order. Both expand dynamically. However, their underlying structures differ: ALs are backed by an array while LLs are backed by a doubly-linked list, meaning that all elements in the list have pointers to the next and previous elements. Furthermore, LLs use wrapper objects, so their memory overhead is greater than ALs. 
+
+Testing: To test the hypothesis that ALs perform faster except in the case of mid-list inserts, two files for AL and LL handling of generic<T> types were created. Key methods shared by AL and LL include: insert, delete, size, and print (traverse). In both classes' respective drivers, random numbers were generated to test both structures' dynamic grow/shrink speed using currentTimeMillis() built-in Java class to compare nanoseconds before and after add and delete method runtimes. Add and delete times were averaged over 5 successive trials in IntelliJ on MacOSX x86_64. 
+
+LL analysis: adding 10 elements took approximately 5000 nanoseconds. Delete averaged about n time for LL (25,000 nanoseconds). For 100 elements, adding took approximately 6500, deleting: 45,000. For 1000 elements, adding was still fast at an average of 2140. Deleting averaged 70,000 over five trials. 100,000 elements took an exceedingly long time (15+ minutes), so accurate data was not collected for this large of a test input. 
+
+AL analysis: adding 10 elements took approximately 435 nanoseconds over 5 trials. Deletion from a specific position averaged about n time for ALs (450,000 nanoseconds). For 100 elements, adding took an average of 412 nanoseconds, while delete took 397,000. For 100,00 elements, adding averaged 222 nanoseconds. Delete averaged 7,650,000 nanoseconds. 
+
+Conclusions: The results generally support the hypothesis: inserting and deleting are more efficiently done in ArrayList (AL) structures rather than in LinkedLists (LL). However, deletion from small LLs (<1000 elements) was faster. Deleting may have timed out for 100,000+ elements in the LinkedList because, since the list is unsorted, indexing costs worst-case O(n) time because LLs record pointers to the head and tail; thus, you must traverse the entire list until you reach your desired index location for insert/delete. For 100,000+ items, this is very expensive! However, if insertion only occurs at the last position in either a LL or AL, the worst-case time is O(1) since references to the last element are stored in both. AL indexing is superior to LL indexing because it takes the same amount of time to access an element by its index in a list of 10 or one million. The AL's efficiency was improved by instantiating an initial capacity to avoid having to re-allocate space on each insert. Interestingly, removing from the one and three-quarters index locations (only tested on a list size of 100, so at indices 25 and 75, respectively), did not have a proportional effect on delete's runtime: while one would expect deletion and insertion at index 25 to be faster than the middle, 3/4, or end, it was not. Inserting into the middle of a LL takes O(n) time since you must iterate over the list so far to reach your desired index. Therefore, unlike the AL, inserting or deleting in the LL is O(n) worst-case since you have to find your desired index each time.  
+
+Discussion and Future Improvements: The LL implementation is far from perfect, as it only adds to the end of the list. Neither the AL nor LL insert or delete from specifically the middle. While I instantiate capacity in the AL, I still redundantly call resize() in my add() method. Finally, I would add additional trials and conduct a formal sample test of significance for my hypothesis, that LLs perform worse on average than ALs except in the case of insertion into the middle of a list >100,000 elements. 
+
+Sources:
+Aaron Benner, "Arraylist Main.java," Examples Code for C/Assembler CSC344 Spring 2019, Accessed 3 April 2019, http://cs.rocky.edu/~bennera/Courses/csc344/notes/code-examples/java/SimpleArrayList/src/edu/rmc/csc344/Main.java. 
+ 
+"Java List Collection Tutorial and Examples," CodeJava Online, Accessed 3 April 2019, https://www.codejava.net/java-core/collections/java-list-collection-tutorial-and-examples. 
+
+Mario Martinez, "Java lists: ArrayList vs. LinkedList," TPX Manifesto online, Accessed 3 April 2019, https://manifesto.co.uk/java-lists-arraylist-vs-linkedlist/ 
